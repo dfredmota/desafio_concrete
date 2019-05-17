@@ -55,7 +55,7 @@ public class UsuarioService {
 			
 			usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
 			
-			usuario.setToken(passwordEncoder.encode(token));
+			usuario.setToken(token);
 			
 			usuario = usuarioDAO.save(usuario);
 			
@@ -80,6 +80,9 @@ public class UsuarioService {
 			throw new UsuarioSenhaInvalidoException(INVALID_USER_PASS);
 		}
 		
+		validUser.setLastLogin(new Date());
+		validUser.setModified(new Date());
+		
 		validUser = usuarioDAO.update(validUser);
 		
 		return validUser;
@@ -88,16 +91,15 @@ public class UsuarioService {
 	
 	public Usuario profile(String id, String tokenJwt) throws TokenInvalidoException, SessaoInvalidaException{
 		
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		
 		Usuario usuario = usuarioDAO.getById(new Long(id));
 		
-		if(passwordEncoder.matches(usuario.getToken(), tokenJwt)) {
+		if(!usuario.getToken().equals(tokenJwt)) {
 			
 			throw new TokenInvalidoException(MSG_401);
 		}
 		
-		long duration = usuario.getLastLogin().getTime() - new Date().getTime();
+		long duration = new Date().getTime() - usuario.getLastLogin().getTime();
 		
 		if (duration <= MAX_DURATION) {
 		    

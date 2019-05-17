@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.EqualsAndHashCode;
@@ -50,6 +51,7 @@ public class Usuario {
 
     private String password;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="last_login")
     private Date lastLogin;
@@ -59,12 +61,12 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", fetch=FetchType.EAGER)
     private List<Phone> phones;
 	
-	@JsonIgnore
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
     @Temporal(TemporalType.TIMESTAMP)
 	@Column(name="created_at")
     protected Date createdDate; 	
 	
-	@JsonIgnore
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="updated_at")
 	private Date modified;

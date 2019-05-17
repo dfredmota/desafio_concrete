@@ -88,7 +88,7 @@ public class UsuarioController {
 
 	}
 
-	@RequestMapping(value = "/profile", method = RequestMethod.POST)
+	@RequestMapping(value = "/profile/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Object> profile(@PathVariable("id") String id, HttpServletRequest request) {
 
 		Usuario usuario = null;
